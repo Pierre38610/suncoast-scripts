@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation &amp; Exports — Suncoast Scripts</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">SUNCOAST <span>SCRIPTS</span></div>
+        <div class="nav-links">
+          <a href="./index.html">Suite</a>
+          <a href="./docs.html">Documentation &amp; Exports</a>
+          <a href="./terms.html">Terms &amp; Support</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:40px;">
+    <h1>Installation &amp; Developer Exports</h1>
+    <p class="subtitle" style="margin:10px 0 28px;">
+      Requires FXServer artifact <code>5181+</code>, <code>oxmysql</code> (for PrismScan, VaultNet &amp; HeatHUD persistence), and OneSync enabled.
+    </p>
+
+    <div class="card">
+      <h3>1. Server Load Order (<code>server.cfg</code>)</h3>
+<pre>ensure oxmysql
+# Framework (qbx_core / qb-core / es_extended) + optional ox_lib / ox_target / ox_inventory
+
+ensure sc_vehscan
+ensure sc_wanted
+ensure sc_launder
+ensure sc_carjack</pre>
+
+      <h3>2. Database Setup</h3>
+      <p>Import the SQL files inside each resource's <code>sql/install.sql</code> folder:</p>
+<pre>resources/sc_vehscan/sql/install.sql
+resources/sc_launder/sql/install.sql
+resources/sc_wanted/sql/install.sql</pre>
+
+      <h3>3. Open Bridge Customization</h3>
+      <p>Every resource keeps <code>config.lua</code>, <code>locales/*.lua</code>, <code>shared/*.lua</code>, and <code>bridge/*.lua</code> unlocked in <code>escrow_ignore</code> so you can adapt custom inventories, notifications, key scripts, or police dispatch systems without waiting for updates.</p>
+
+      <h3>4. Cross-Resource Server Exports</h3>
+<pre>-- sc_vehscan
+exports.sc_vehscan:GetVehicleScanProfile(plate)
+exports.sc_vehscan:HasPlayerScannedPlate(src, plate)
+exports.sc_vehscan:ComputeFenceValuation(modelName, classId, engineHealth, bodyHealth)
+
+-- sc_carjack
+exports.sc_carjack:IsVehicleTracked(plate)
+exports.sc_carjack:GetActiveTheftSession(src)
+
+-- sc_launder
+exports.sc_launder:AddDuffelLoot(src, channel, value, label)
+exports.sc_launder:GetDuffelLoot(src)
+exports.sc_launder:GetCrewAccountBalance(accountCode)
+exports.sc_launder:GetFenceMarketState()
+
+-- sc_wanted
+exports.sc_wanted:AddHeat(src, amount, reason)
+exports.sc_wanted:ClearHeat(src, captured)
+exports.sc_wanted:GetWantedState(src)
+exports.sc_wanted:GetInfamyProfile(src)</pre>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>Suncoast Scripts</strong> &bull; Unofficial fan-made FiveM server resources. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+    </div>
+  </footer>
+</body>
+</html>
